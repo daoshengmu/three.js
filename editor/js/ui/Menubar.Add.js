@@ -175,7 +175,56 @@ Menubar.Add = function ( signals ) {
 
 	} );
 	options.add( option );
+        
+        // add COLLADA
+	var option = new UI.Panel();
+	option.setClass( 'option' );
+	option.setTextContent( 'COLLADA' );
+	option.onClick( function () {
 
+            var loader = new THREE.ColladaLoader();
+            
+            loader.options.convertUpAxis = true;
+            loader.load( './models/collada/monster/monster.dae', function ( collada ) {
+
+                    dae = collada.scene;       
+                    dae.scale.x = dae.scale.y = dae.scale.z = 0.2;
+                    dae.updateMatrix();
+                    dae.name = 'COLLADAxx ';
+                    signals.objectAdded.dispatch( dae );
+
+            } );
+
+	} );
+	options.add( option );
+
+        // add JSON
+	var option = new UI.Panel();
+	option.setClass( 'option' );
+	option.setTextContent( 'JSON' );
+	option.onClick( function () {
+
+            var loader = new THREE.JSONLoader();
+            loader.load( './models/json/horse.js' , function ( geometry, material ) {
+                    
+                    material = material !== undefined
+                                            ? new THREE.MeshFaceMaterial( material )
+                                            : new THREE.MeshPhongMaterial();
+
+                    geometry.sourceType = "ascii";
+                    geometry.sourceFile = 'horse.js';
+
+                    var mesh = new THREE.Mesh( geometry, material );
+                    mesh.name = 'horse.js';
+
+                    signals.objectAdded.dispatch( mesh );
+                    signals.objectSelected.dispatch( mesh );
+            
+                } );                   
+
+            } );
+	options.add( option );
+        
 	// divider
 
 	options.add( new UI.HorizontalRule() );

@@ -2,3 +2,5 @@
 *.swp
 .project
 utils/npm/node_modules/*
+/editor/nbproject/private/
+/examples/nbproject/private/
